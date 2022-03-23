@@ -100,9 +100,11 @@ class Terminal extends React.Component {
 
                     args.forEach((arg) => {
                         let node = ResolvePath(this.directory, arg);
-                        if (node.type === 'file') {
+                        if (!node) {
+                            lines.push(`cat: ${arg}: No such file or directory`);
+                        } else if (node.type === 'file') {
                             lines.push(node.data);
-                        } else {
+                        } else if (node.type === 'directory') {
                             lines.push(`cat: ${arg}: Is a directory`);
                         }
                     });
@@ -163,7 +165,7 @@ class Terminal extends React.Component {
                 }
                 break;
             case "pwd":
-                this.addOutput(this.state.path);
+                this.addOutput(ComputePath(this.directory));
                 break;
             default:
                 this.addOutput(command + ": command not found");
