@@ -135,14 +135,35 @@ class Terminal extends React.Component {
                     this.addOutput(dirs.concat(files).join(' '));
                 } else if (args.length === 1) {
                     let node = ResolvePath(this.directory, args[0]);
-                    if (node.type === 'file') {
+                    if (!node) {
+                        this.addOutput(`ls: cannot access '${args[0]}': No such file or directory`);
+                    } else if (node.type === 'file') {
                         this.addOutput(node.name);
                     } else {
                         let dirs = node.dirs.map(dir => dir.name);
                         let files = node.files.map(file => file.name);
                         this.addOutput(dirs.concat(files).join(' '));
                     }
+                } else {
+                    let lines = [];
+
+                    args.forEach((arg) => {
+                        let node = ResolvePath(this.directory, arg);
+                        if (!node) {
+                            lines.push(`ls: cannot access '${args[0]}': No such file or directory`);
+                        } else if (node.type === 'file') {
+                            lines.push(node.name);
+                        } else {
+                            let dirs = node.dirs.map(dir => dir.name);
+                            let files = node.files.map(file => file.name);
+                            lines.push(' ', `${arg}:`, dirs.concat(files).join(' '))
+                        }
+                        this.addOutput(lines);
+                    });
                 }
+                break;
+            case "pwd":
+                this.addOutput(this.state.path);
                 break;
             default:
                 this.addOutput(command + ": command not found");
