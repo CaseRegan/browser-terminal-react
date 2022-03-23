@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import React from 'react';
+import Terminal from './Terminal';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            rows: Math.floor(window.innerHeight / 15) - 1
+        };
+    }
+    
+    componentDidMount() {
+        document.title = "user@browser-terminal.js";
+        window.addEventListener('resize', this.handleResize);
+    }
+    
+    handleResize = () => {
+        this.setState({
+            rows: Math.floor(window.innerHeight / 15) - 1
+        });
+    }
+    
+    render() {
+        return (
+            <div className="App">
+            <Terminal rows={this.state.rows} userString="user@browser-terminal.js" />
+            </div>
+            );
+        }
+    }
+    
+    export default App;

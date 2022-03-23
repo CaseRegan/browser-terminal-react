@@ -1,3 +1,7 @@
+Not a serious project yet, I just want version control.
+
+TODO: rewrite the rest of GNU/Linux in JavaScript.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
